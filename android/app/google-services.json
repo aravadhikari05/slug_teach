@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "979225287448",
+    "project_id": "slug-teach",
+    "storage_bucket": "slug-teach.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979225287448:android:bc9d2938e6c995a512dc6d",
+        "android_client_info": {
+          "package_name": "com.example.slug_teach"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGI9lA1C4kYv7vFTJMmystgCSNrtKNqxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
