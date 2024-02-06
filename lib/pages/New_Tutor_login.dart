@@ -4,8 +4,6 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
-import 'package:quickalert/quickalert.dart';
-
 class TutorLogin extends StatefulWidget {
   const TutorLogin({super.key});
 

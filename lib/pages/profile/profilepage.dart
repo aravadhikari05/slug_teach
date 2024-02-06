@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tutoringapp/pages/profile/constants/colors.dart';
+import 'package:slug_teach/pages/profile/constants/colors.dart';
 
 void main() {
   runApp(const ProfilePage());
