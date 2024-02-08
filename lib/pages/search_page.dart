@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:slug_teach/pages/colors.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: primary,
       appBar: AppBar(
         title: Text('Search'),
       ),
