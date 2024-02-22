@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slug_teach/pages/profile/constants/colors.dart';
+import 'package:slug_teach/pages/colors.dart';
 
 void main() {
   runApp(const ProfilePage());
@@ -7,6 +7,10 @@ void main() {
 
 class ProfilePage extends StatelessWidget{
   const ProfilePage({super.key});
+  main() {
+    // TODO: implement main
+    throw UnimplementedError();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

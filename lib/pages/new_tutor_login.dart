@@ -3,6 +3,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:slug_teach/pages/search_page.dart';
 
 class TutorLogin extends StatefulWidget {
   const TutorLogin({super.key});
@@ -33,6 +34,11 @@ class _TutorLoginState extends State<TutorLogin> {
   }
 
   void done() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                SearchPage()));
     String userEmail = emailController.text;
     String userPassword = passwordController.text;
     String userFirstName = firstNameController.text;

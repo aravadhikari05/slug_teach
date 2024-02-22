@@ -11,12 +11,12 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: primary,
       appBar: AppBar(
-        title: Text('Search'),
+        title: const Text('Search'),
       ),
       body: Column(
         children: [
           SearchBar(),
-          Expanded(
+          const Expanded(
             child: Center(
               child: Text('Search results will be displayed here!'),
             ),
@@ -32,7 +32,7 @@ class SearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-      child: TextField(
+      child: const TextField(
         decoration: InputDecoration(
           labelText: 'Search',
           border: OutlineInputBorder(),
