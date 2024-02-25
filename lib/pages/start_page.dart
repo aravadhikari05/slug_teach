@@ -5,16 +5,10 @@ import 'package:slug_teach/pages/new_student_login.dart';
 import 'login_page.dart';
 import 'new_tutor_login.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+
 class StartPage extends StatefulWidget{
 
   const StartPage({super.key, required this.title});
-  main() {
-    // TODO: implement main
-    throw UnimplementedError();
-  }
   final String title;
 
   @override
@@ -22,6 +16,23 @@ class StartPage extends StatefulWidget{
 
   
   
+}
+Route _createRoute(Widget app) {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => app,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = 0.0;
+      var end = 1.0;
+      var curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return FadeTransition(
+        opacity: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
 }
 class _StartPageState extends State<StartPage>{
   @override
@@ -32,6 +43,7 @@ class _StartPageState extends State<StartPage>{
        title: Text(widget.title, style: const TextStyle()),
       ),
       body: Center(
+
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -50,36 +62,26 @@ class _StartPageState extends State<StartPage>{
           ),
         ),
               const SizedBox(height:180),
-              TextButton(onPressed: () { Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          const StudentLogin())); }, style: TextButton.styleFrom(
+              TextButton(onPressed: () {Navigator.of(context).push(_createRoute(StudentLogin(subjects: [])));}, style: TextButton.styleFrom(
                 backgroundColor: primary2
               ),child: const Text(' Student ',
                   style: TextStyle(height: 2, fontSize: 30),),),
                 const SizedBox(height:30),
               TextButton(onPressed: () {
+                Navigator.of(context).push(_createRoute(TutorLogin(subjects: [])));
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            const TutorLogin()));  },style: TextButton.styleFrom(
+                  },style: TextButton.styleFrom(
 
                   backgroundColor: primary2
               ), child: const Text(' Tutor ',
                 style: TextStyle(height: 2, fontSize: 30),),),
               const SizedBox(height:150),
-              TextButton(onPressed: () {Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                      const Login())); },style: TextButton.styleFrom(
+              TextButton(onPressed: () {Navigator.of(context).push(_createRoute(Login())); },style: TextButton.styleFrom(
 
                   backgroundColor: primary2
               ), child: const Text(' Login ',
                 style: TextStyle(height: 2, fontSize: 15)),),
+
 
 
 
@@ -95,37 +97,15 @@ class _StartPageState extends State<StartPage>{
       )
       )
     );
+
+
+
+
   }
   
 }
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-      FocusScopeNode currentFocus = FocusScope.of(context);
-
-      if (!currentFocus.hasPrimaryFocus) {
-        currentFocus.unfocus();
-      }
-    },
-    child: MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        scaffoldBackgroundColor: primary,
-        primarySwatch: primary,
-
-        useMaterial3: true
-      ),
-      home: const StartPage(title: 'Slug Teach'),
-    )
-    );
 
     
-  }
-}
+
+
 

@@ -3,7 +3,10 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:slug_teach/pages/home_page.dart';
 import 'package:slug_teach/pages/search_page.dart';
+
+import 'colors.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -33,7 +36,7 @@ class _LoginState extends State<Login> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                SearchPage()));
+                HomePage()));
     String userEmail = emailController.text;
     String userPassword = passwordController.text;
   }
@@ -47,7 +50,7 @@ class _LoginState extends State<Login> {
           centerTitle: false,
           title: Text('Login',
               style: TextStyle(color: Colors.black, fontSize: 60)),
-          backgroundColor: const Color.fromARGB(255, 206, 206, 206)),
+          backgroundColor: primary2),
 
       //LIST OF ALL TEXTS AND INPUTS
       body: Scrollbar(

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:slug_teach/pages/colors.dart';
+import 'package:slug_teach/pages/home_page.dart';
+import 'package:slug_teach/pages/search_page.dart';
 
-void main() {
-  runApp(const ProfilePage());
+import 'messages.dart';
+
+void main(){
+  runApp(ProfilePage());
 }
 
 class ProfilePage extends StatelessWidget{
   const ProfilePage({super.key});
-  main() {
-    // TODO: implement main
-    throw UnimplementedError();
-  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,8 +37,62 @@ class PfPageState extends State<PfPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: maincolor,
+        backgroundColor: primary2,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: (){Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomePage()));},
+        ),
+
         title: Text(widget.title),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomePage()));
+
+
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchPage()));
+
+
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.chat),
+              onPressed: () {Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Messages()));
+
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.account_circle),
+              onPressed: () {
+
+
+              },
+            ),
+          ],
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -82,45 +136,7 @@ class PfPageState extends State<PfPage>{
               child: const Text('Connect', style:TextStyle(fontSize:30)),
             ),
           ),
-          Positioned(
-            top:600,left:0,
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 100, height: 100,
-                  child: MaterialButton(
-                    color: greymain,
-                    onPressed: (){print('Home pressed');},
-                    child: const Icon(Icons.home, color: Colors.black, size: 40),
-                  ),
-                ),
-                SizedBox(
-                  width: 100, height: 100,
-                  child: MaterialButton(
-                      color: greymain,
-                      onPressed: (){print('Search pressed');},
-                    child: const Icon(Icons.search, color: Colors.black, size: 40),
-                  ),
-                ),
-                SizedBox(
-                  width: 100, height: 100,
-                  child: MaterialButton(
-                      color: greymain,
-                      onPressed: (){print('Messages pressed');},
-                    child: const Icon(Icons.chat, color: Colors.black, size: 40),
-                  ),
-                ),
-                SizedBox(
-                  width: 100, height: 100,
-                  child: MaterialButton(
-                      color: greymain,
-                      onPressed: (){print('Profile pressed');},
-                    child: const Icon(Icons.account_circle, color: Colors.black, size: 40),
-                  ),
-                ),
-              ],
-            ),
-          ),
+
           Positioned(
             top: 10, left: 335,
             child: Image.asset('assets/images/editbutton.png', scale:10),

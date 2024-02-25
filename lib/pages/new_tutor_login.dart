@@ -4,6 +4,9 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
+import 'colors.dart';
+import 'home_page.dart';
+
 class TutorLogin extends StatefulWidget {
   final List<String> subjects;
   const TutorLogin({super.key, required this.subjects});
@@ -150,6 +153,11 @@ class _TutorLoginState extends State<TutorLogin> {
               isNumeric(birthday[7]) &&
               isNumeric(birthday[8]) &&
               isNumeric(birthday[9]))) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    HomePage()));
       } else {
         showDialog(
             context: context,
@@ -185,7 +193,7 @@ class _TutorLoginState extends State<TutorLogin> {
           centerTitle: false,
           title: Text('Tutor',
               style: TextStyle(color: Colors.black, fontSize: 60)),
-          backgroundColor: const Color.fromARGB(255, 206, 206, 206)),
+          backgroundColor: primary2),
 
       //LIST OF ALL TEXTS AND INPUTS
       body: Scrollbar(

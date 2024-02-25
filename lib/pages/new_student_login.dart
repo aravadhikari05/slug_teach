@@ -3,16 +3,112 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:slug_teach/pages/search_page.dart';
+
+import 'colors.dart';
+import 'home_page.dart';
 
 class StudentLogin extends StatefulWidget {
-  const StudentLogin({super.key});
+  final List<String> subjects;
+  const StudentLogin({super.key, required this.subjects});
 
   @override
   State<StudentLogin> createState() => _StudentLoginState();
 }
 
+class MultiSelect extends StatefulWidget {
+  final List<String> subjects;
+  const MultiSelect({super.key, required this.subjects});
+
+  @override
+  State<MultiSelect> createState() => _MultiSelectState();
+}
+
+class _MultiSelectState extends State<MultiSelect> {
+  // this variable holds the selected items
+  final List<String> _selectedSubjects = [];
+
+  // This function is triggered when a checkbox is checked or unchecked
+  void _subjectChange(String itemValue, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        _selectedSubjects.add(itemValue);
+      } else {
+        _selectedSubjects.remove(itemValue);
+      }
+    });
+  }
+
+  // this function is called when the Cancel button is pressed
+  void _cancel() {
+    Navigator.pop(context);
+  }
+
+// this function is called when the Submit button is tapped
+  void _submit() {
+    Navigator.pop(context, _selectedSubjects);
+  }
+
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select Subjects'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: widget.subjects
+              .map((item) => CheckboxListTile(
+            value: _selectedSubjects.contains(item),
+            title: Text(item),
+            controlAffinity: ListTileControlAffinity.leading,
+            onChanged: (isChecked) => _subjectChange(item, isChecked!),
+          ))
+              .toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: _cancel,
+          child: const Text(
+            'Cancel',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: _submit,
+          child: const Text(
+            'Done',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _StudentLoginState extends State<StudentLogin> {
+  List<String> _selectedSubjects = [];
+
+  void _showMultiSelect() async {
+    final List<String> subjects = ['Math', 'English', 'Science'];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(
+          subjects: subjects,
+        );
+      },
+    );
+
+    if (results != null) {
+      setState(() {
+        _selectedSubjects = results;
+      });
+    }
+  }
+
   //initializing all user string data
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -34,11 +130,6 @@ class _StudentLoginState extends State<StudentLogin> {
   }
 
   void done() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                SearchPage()));
     String userEmail = emailController.text;
     String userPassword = passwordController.text;
     String userFirstName = firstNameController.text;
@@ -47,24 +138,47 @@ class _StudentLoginState extends State<StudentLogin> {
     String userBirthday = birthdayController.text;
     String userSubject = subjectController.text;
     String userDescription = descriptionController.text;
+    List<String> userSubjects = _selectedSubjects;
 
-    List<String> birthday = userBirthday.split("");
-    if ((birthday[2] == '/' && birthday[5] == '/') &&
-        birthday.length == 10 &&
-        (isNumeric(birthday[0]) &&
-            isNumeric(birthday[1]) &&
-            isNumeric(birthday[3]) &&
-            isNumeric(birthday[4]) &&
-            isNumeric(birthday[6]) &&
-            isNumeric(birthday[7]) &&
-            isNumeric(birthday[8]) &&
-            isNumeric(birthday[9]))) {
+    print(userSubjects[0]);
+    if (userBirthday != '' && userBirthday.length >= 3) {
+      List<String> birthday = userBirthday.split("");
+      if ((birthday[2] == '/' && birthday[5] == '/') &&
+          birthday.length == 10 &&
+          (isNumeric(birthday[0]) &&
+              isNumeric(birthday[1]) &&
+              isNumeric(birthday[3]) &&
+              isNumeric(birthday[4]) &&
+              isNumeric(birthday[6]) &&
+              isNumeric(birthday[7]) &&
+              isNumeric(birthday[8]) &&
+              isNumeric(birthday[9]))) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    HomePage()));
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text(
+                  'Invalid Birthday, please use MM/DD/YYYY format',
+                  textAlign: TextAlign.center,
+                ),
+              );
+            });
+      }
     } else {
       showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('text'),
+              title: Text(
+                'Invalid Birthday, please use MM/DD/YYYY format',
+                textAlign: TextAlign.center,
+              ),
             );
           });
     }
@@ -79,7 +193,7 @@ class _StudentLoginState extends State<StudentLogin> {
           centerTitle: false,
           title: Text('Student',
               style: TextStyle(color: Colors.black, fontSize: 60)),
-          backgroundColor: const Color.fromARGB(255, 206, 206, 206)),
+          backgroundColor: primary2),
 
       //LIST OF ALL TEXTS AND INPUTS
       body: Scrollbar(
@@ -273,21 +387,51 @@ class _StudentLoginState extends State<StudentLogin> {
             //SUBJECT INPUT
             Padding(
               padding: const EdgeInsets.only(right: 60, left: 16),
-              child: TextField(
-                controller: subjectController,
-                autocorrect: false,
-                style: TextStyle(fontSize: 21, color: Colors.black),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black)),
-                  fillColor: Color.fromARGB(255, 206, 206, 206),
-                  filled: true,
-                  contentPadding:
-                  EdgeInsets.symmetric(vertical: -15, horizontal: 9),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // use this button to open the multi-select dialog
+                  ElevatedButton(
+                      onPressed: _showMultiSelect,
+                      child: Align(
+                        child: const Text('Click to Select Subjects',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left),
+                      ),
+                      style: ButtonStyle(
+                        shape:
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(color: Colors.black))),
+                        backgroundColor:
+                        MaterialStateProperty.resolveWith((states) {
+                          // If the button is pressed, return green, otherwise blue
+                          if (states.contains(MaterialState.pressed)) {
+                            return Color.fromARGB(255, 194, 194, 194);
+                          }
+                          return Color.fromARGB(255, 206, 206, 206);
+                        }),
+                      )),
+
+                  // display selected items
+                  Wrap(
+                    children: _selectedSubjects
+                        .map((e) => Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Chip(
+                        side: BorderSide(color: Colors.black),
+                        backgroundColor:
+                        Color.fromARGB(255, 206, 206, 206),
+                        label: Text(e),
+                      ),
+                    ))
+                        .toList(),
+                  )
+                ],
               ),
             ),
 
