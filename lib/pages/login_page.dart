@@ -2,10 +2,12 @@
 
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:slug_teach/pages/home_page.dart';
 import 'package:slug_teach/pages/search_page.dart';
 
+import '../user_auth/authentication.dart';
 import 'colors.dart';
 
 class Login extends StatefulWidget {
@@ -16,6 +18,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  Authentication _auth = Authentication();
   //initializing all user string data
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -31,14 +34,23 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void done() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                HomePage()));
+  void done() async {
     String userEmail = emailController.text;
     String userPassword = passwordController.text;
+
+    User? user = await _auth.signInWithEmailAndPassword(userEmail, userPassword);
+
+    if(user != null) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SearchPage()));
+    } else {
+      print("oops");
+    }
+
+
   }
 
   @override

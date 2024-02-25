@@ -2,8 +2,10 @@
 
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../user_auth/authentication.dart';
 import 'colors.dart';
 import 'home_page.dart';
 
@@ -89,6 +91,7 @@ class _MultiSelectState extends State<MultiSelect> {
 
 class _TutorLoginState extends State<TutorLogin> {
   List<String> _selectedSubjects = [];
+  Authentication _auth = Authentication();
 
   void _showMultiSelect() async {
     final List<String> subjects = ['Math', 'English', 'Science'];
@@ -116,7 +119,7 @@ class _TutorLoginState extends State<TutorLogin> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController gradeController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
-  TextEditingController subjectController = TextEditingController();
+  //TextEditingController subjectController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   bool isNumeric(String str) {
@@ -129,19 +132,38 @@ class _TutorLoginState extends State<TutorLogin> {
     }
   }
 
-  void done() {
+  Future<void> done() async{
+    void invalidField(String message) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                message,
+                textAlign: TextAlign.center,
+              ),
+            );
+          });
+    }
     String userEmail = emailController.text;
     String userPassword = passwordController.text;
     String userFirstName = firstNameController.text;
     String userLastName = lastNameController.text;
     String userGrade = gradeController.text;
     String userBirthday = birthdayController.text;
-    String userSubject = subjectController.text;
+    //String userSubject = subjectController.text;
     String userDescription = descriptionController.text;
     List<String> userSubjects = _selectedSubjects;
 
-    print(userSubjects[0]);
-    if (userBirthday != '' && userBirthday.length >= 3) {
+    if(userEmail == '' || userPassword == '' || userFirstName == '' || userLastName == '' || userGrade == '' || userBirthday == '' || userDescription == '' || userSubjects.length == 0) {
+      invalidField("Please fill out all of the fields");
+      return;
+    }
+    if(userPassword.length < 8) {
+      invalidField("Password must be longer than 8 characters");
+      return;
+    }
+    if (userBirthday.length == 10) {
       List<String> birthday = userBirthday.split("");
       if ((birthday[2] == '/' && birthday[5] == '/') &&
           birthday.length == 10 &&
@@ -153,34 +175,25 @@ class _TutorLoginState extends State<TutorLogin> {
               isNumeric(birthday[7]) &&
               isNumeric(birthday[8]) &&
               isNumeric(birthday[9]))) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HomePage()));
       } else {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  'Invalid Birthday, please use MM/DD/YYYY format',
-                  textAlign: TextAlign.center,
-                ),
-              );
-            });
+        invalidField('Invalid Birthday, please use MM/DD/YYYY format');
+        return;
       }
     } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(
-                'Invalid Birthday, please use MM/DD/YYYY format',
-                textAlign: TextAlign.center,
-              ),
-            );
-          });
+      invalidField('Invalid Birthday, please use MM/DD/YYYY format');
+      return;
+    }
+    User? user = await _auth.signUpWithEmailAndPassword(userEmail, userPassword);
+
+    if(user != null) {
+      print("Successfully created a tutor account");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  HomePage()));
+    } else {
+      print('Could not create a tutor account');
     }
   }
 

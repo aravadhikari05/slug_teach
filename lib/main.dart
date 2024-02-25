@@ -10,13 +10,13 @@ import 'firebase_options.dart';
 // ...
 
 Future<void> main() async {
-  runApp(Search());
+  runApp(Start());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 }
 
-class Search extends StatelessWidget {
+class Start extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +30,7 @@ class Search extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
 
-      home: StartPage(title: 'Slug Teach',),
+      home: const StartPage(title: 'Slug Teach',),
     );
   }
 }

@@ -2,8 +2,10 @@
 
 import 'dart:ffi';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../user_auth/authentication.dart';
 import 'colors.dart';
 import 'home_page.dart';
 
@@ -88,6 +90,8 @@ class _MultiSelectState extends State<MultiSelect> {
 }
 
 class _StudentLoginState extends State<StudentLogin> {
+  final Authentication _auth = Authentication();
+
   List<String> _selectedSubjects = [];
 
   void _showMultiSelect() async {
@@ -129,7 +133,19 @@ class _StudentLoginState extends State<StudentLogin> {
     }
   }
 
-  void done() {
+  Future<void> done() async{
+    void invalidField(String message) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text(
+                message,
+                textAlign: TextAlign.center,
+              ),
+            );
+          });
+    }
     String userEmail = emailController.text;
     String userPassword = passwordController.text;
     String userFirstName = firstNameController.text;
@@ -140,8 +156,16 @@ class _StudentLoginState extends State<StudentLogin> {
     String userDescription = descriptionController.text;
     List<String> userSubjects = _selectedSubjects;
 
-    print(userSubjects[0]);
-    if (userBirthday != '' && userBirthday.length >= 3) {
+    if(userEmail == '' || userPassword == '' || userFirstName == '' || userLastName == '' || userGrade == '' || userBirthday == '' || userDescription == '' || userSubject == '' || userGrade == '') {
+      invalidField("Please fill out all of the fields");
+      return;
+    }
+    if(userPassword.length < 8) {
+      invalidField("Password must be at least 8 characters");
+      return;
+    }
+
+    if (userBirthday.length == 10) {
       List<String> birthday = userBirthday.split("");
       if ((birthday[2] == '/' && birthday[5] == '/') &&
           birthday.length == 10 &&
@@ -153,34 +177,26 @@ class _StudentLoginState extends State<StudentLogin> {
               isNumeric(birthday[7]) &&
               isNumeric(birthday[8]) &&
               isNumeric(birthday[9]))) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HomePage()));
       } else {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: Text(
-                  'Invalid Birthday, please use MM/DD/YYYY format',
-                  textAlign: TextAlign.center,
-                ),
-              );
-            });
+        invalidField('Invalid Birthday, please use MM/DD/YYYY format');
+        return;
       }
     } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text(
-                'Invalid Birthday, please use MM/DD/YYYY format',
-                textAlign: TextAlign.center,
-              ),
-            );
-          });
+      invalidField('Invalid Birthday, please use MM/DD/YYYY format');
+      return;
+    }
+
+    User? user = await _auth.signUpWithEmailAndPassword(userEmail, userPassword);
+
+    if(user != null) {
+      print("Successfully created a student account");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  HomePage()));
+    } else {
+      print('Could not create a student account');
     }
   }
 
