@@ -155,7 +155,7 @@ class _TutorLoginState extends State<TutorLogin> {
     String userDescription = descriptionController.text;
     List<String> userSubjects = _selectedSubjects;
 
-    if(userEmail == '' || userPassword == '' || userFirstName == '' || userLastName == '' || userGrade == '' || userBirthday == '' || userDescription == '' || userSubjects.length == 0) {
+    if(userEmail == '' || userPassword == '' || userFirstName == '' || userLastName == '' || userGrade == '' || userBirthday == '' || userDescription == '' || userSubjects.isEmpty) {
       invalidField("Please fill out all of the fields");
       return;
     }

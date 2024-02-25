@@ -120,7 +120,7 @@ class _StudentLoginState extends State<StudentLogin> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController gradeController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
-  TextEditingController subjectController = TextEditingController();
+  //TextEditingController subjectController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   bool isNumeric(String str) {
@@ -152,11 +152,11 @@ class _StudentLoginState extends State<StudentLogin> {
     String userLastName = lastNameController.text;
     String userGrade = gradeController.text;
     String userBirthday = birthdayController.text;
-    String userSubject = subjectController.text;
+    //String userSubject = subjectController.text;
     String userDescription = descriptionController.text;
     List<String> userSubjects = _selectedSubjects;
 
-    if(userEmail == '' || userPassword == '' || userFirstName == '' || userLastName == '' || userGrade == '' || userBirthday == '' || userDescription == '' || userSubject == '' || userGrade == '') {
+    if(userEmail == '' || userPassword == '' || userFirstName == '' || userLastName == '' || userGrade == '' || userBirthday == '' || userDescription == '' || userSubjects.isEmpty || userGrade == '') {
       invalidField("Please fill out all of the fields");
       return;
     }
