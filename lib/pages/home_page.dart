@@ -48,13 +48,12 @@ class _HomePageState extends State<HomePage> {
       User? user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-        // User is signed in
-        // Fetch user's additional data from Firestore (assuming you stored user data there)
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
 
-        // Update the user's name
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('students').doc(user.uid).get();
+
+
         setState(() {
-          _userName = userDoc['name']; // Assuming 'name' is the field in Firestore that stores user's name
+          _userName = userDoc['name'];
         });
       }
     } catch (e) {
