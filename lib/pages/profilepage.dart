@@ -1,9 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:slug_teach/pages/colors.dart';
 import 'package:slug_teach/pages/home_page.dart';
 import 'package:slug_teach/pages/search_page.dart';
 
 import 'messages.dart';
+
+
 
 void main(){
   runApp(ProfilePage());
@@ -35,6 +39,7 @@ class PfPage extends StatefulWidget{
 class PfPageState extends State<PfPage>{
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primary2,
@@ -99,25 +104,25 @@ class PfPageState extends State<PfPage>{
           Positioned(
             top: 0, left: 0,
             child: Container(
-              constraints: const BoxConstraints(
-                maxWidth: 400,
-                maxHeight: 200,
+              constraints: BoxConstraints(
+                maxWidth: screenSize.width,
+                maxHeight: screenSize.height * 0.25,
               ),
               color: greymain,
             ),
           ),
           Positioned(
-            top: 200, left: 0,
+            top: screenSize.height * 0.25, left: 0,
             child: Container(
-              constraints: const BoxConstraints(
-                maxWidth: 400,
-                maxHeight: 540,
+              constraints: BoxConstraints(
+                maxWidth: screenSize.width,
+                maxHeight: screenSize.height * 0.75 - 200,
               ),
               color: maincolor,
             ),
           ),
           Positioned(
-            top: 25, left: 25,
+            top: 0 + 0.05 * screenSize.width, left: 0 + 0.03 * screenSize.height,
             child: Column(
               children: [
                 Image.asset('assets/images/emptypfp.png', scale:5),
@@ -126,27 +131,31 @@ class PfPageState extends State<PfPage>{
             ),
           ),
           Positioned(
-            top: 540, left: 112,
-            child: ElevatedButton(
-              onPressed: (){print('Connect pressed');},
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                backgroundColor: MaterialStateProperty.all<Color>(gold),
+            top: screenSize.height * 0.65, left: screenSize.width * 0.25,
+            child: SizedBox(
+              width: screenSize.width*0.5,
+              height: screenSize.height*0.07,
+              child: ElevatedButton(
+                onPressed: (){print('Connect pressed');},
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                  backgroundColor: MaterialStateProperty.all<Color>(gold),
+                ),
+                child: const Text('Connect', style:TextStyle(fontSize:30)),
               ),
-              child: const Text('Connect', style:TextStyle(fontSize:30)),
             ),
           ),
 
           Positioned(
-            top: 10, left: 335,
+            top: screenSize.height * 0.02, left: screenSize.width*0.85,
             child: Image.asset('assets/images/editbutton.png', scale:10),
           ),
           Positioned(
-            top: 225, left: 25,
+            top: screenSize.height* 0.27, left: screenSize.width*0.05,
             child: Text('Bio:', style: Theme.of(context).textTheme.headlineSmall),
           ),
           Positioned(
-            top: 375, left: 25,
+            top: screenSize.height*0.45, left: screenSize.width*0.05,
             child: Text('Reviews:', style: Theme.of(context).textTheme.headlineSmall),
           ),
         ],
