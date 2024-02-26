@@ -4,17 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:slug_teach/pages/colors.dart';
 import 'package:slug_teach/pages/home_page.dart';
 import 'package:slug_teach/pages/search_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'messages.dart';
 
 
 
 void main(){
-  runApp(ProfilePage());
+  runApp(ProfilePage("Name"));
 }
 
+
 class ProfilePage extends StatelessWidget{
-  const ProfilePage({super.key});
+
+
+
+
+
+  ProfilePage(this.username, {super.key});
+  String username;
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,20 +33,25 @@ class ProfilePage extends StatelessWidget{
           colorScheme: ColorScheme.fromSeed(seedColor: maincolor),
           useMaterial3: true,
         ),
-        home: const PfPage(title: 'Profile Page'),
+        home: PfPage(name: username),
     );
   }
 }
 
 
 class PfPage extends StatefulWidget{
-  const PfPage({super.key, required this.title});
-  final String title;
+
+
+  PfPage({super.key, required this.name});
+  final String name;
+
   @override
   State<PfPage> createState() => PfPageState();
 }
 
 class PfPageState extends State<PfPage>{
+
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -52,7 +67,7 @@ class PfPageState extends State<PfPage>{
                   builder: (context) => HomePage()));},
         ),
 
-        title: Text(widget.title),
+        title: Text("Profile Page"),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -75,7 +90,7 @@ class PfPageState extends State<PfPage>{
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchPage()));
+                        builder: (context) => SearchPage(widget.name)));
 
 
               },
@@ -85,7 +100,7 @@ class PfPageState extends State<PfPage>{
               onPressed: () {Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Messages()));
+                      builder: (context) => Messages(widget.name)));
 
               },
             ),
@@ -126,7 +141,7 @@ class PfPageState extends State<PfPage>{
             child: Column(
               children: [
                 Image.asset('assets/images/emptypfp.png', scale:5),
-                Text('Name', style: Theme.of(context).textTheme.headlineMedium),
+                Text(widget.name, style: Theme.of(context).textTheme.headlineMedium),
               ],
             ),
           ),

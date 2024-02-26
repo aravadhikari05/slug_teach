@@ -45,7 +45,7 @@ class _LoginState extends State<Login> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  SearchPage()));
+                  HomePage()));
     } else {
       print("oops");
     }
