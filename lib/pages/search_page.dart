@@ -163,6 +163,12 @@ class _SearchPageState extends State<SearchPage> {
               itemBuilder: (context, index) {
                 final tutor = filteredTutors[index];
                 return ListTile(
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage(tutor.name,tutor.description)));
+
+                  },
                   leading: CircleAvatar(
                     child: Text(tutor.name[0]),
                   ),
