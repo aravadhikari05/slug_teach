@@ -14,8 +14,9 @@ class Tutor {
 class SearchPage extends StatefulWidget {
 
 
-  SearchPage(this.username);
+  SearchPage(this.username,this.bio);
   String username;
+  String bio;
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -86,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Messages(widget.username)),
+                  MaterialPageRoute(builder: (context) => Messages(widget.username,widget.bio)),
                 );
               },
             ),
@@ -95,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(widget.username)),
+                  MaterialPageRoute(builder: (context) => ProfilePage(widget.username,widget.bio)),
                 );
               },
             ),

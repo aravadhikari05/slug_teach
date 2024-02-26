@@ -11,7 +11,7 @@ import 'messages.dart';
 
 
 void main(){
-  runApp(ProfilePage("Name"));
+  runApp(ProfilePage("Name","bio"));
 }
 
 
@@ -21,8 +21,9 @@ class ProfilePage extends StatelessWidget{
 
 
 
-  ProfilePage(this.username, {super.key});
+  ProfilePage(this.username, this.bio,{super.key});
   String username;
+  String bio;
 
 
   @override
@@ -33,7 +34,7 @@ class ProfilePage extends StatelessWidget{
           colorScheme: ColorScheme.fromSeed(seedColor: maincolor),
           useMaterial3: true,
         ),
-        home: PfPage(name: username),
+        home: PfPage(name: username,bio:bio),
     );
   }
 }
@@ -42,8 +43,9 @@ class ProfilePage extends StatelessWidget{
 class PfPage extends StatefulWidget{
 
 
-  PfPage({super.key, required this.name});
+  PfPage({super.key, required this.name, required this.bio});
   final String name;
+  final String bio;
 
   @override
   State<PfPage> createState() => PfPageState();
@@ -90,7 +92,7 @@ class PfPageState extends State<PfPage>{
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchPage(widget.name)));
+                        builder: (context) => SearchPage(widget.name,widget.bio)));
 
 
               },
@@ -100,7 +102,7 @@ class PfPageState extends State<PfPage>{
               onPressed: () {Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Messages(widget.name)));
+                      builder: (context) => Messages(widget.name,widget.bio)));
 
               },
             ),
@@ -167,7 +169,7 @@ class PfPageState extends State<PfPage>{
           ),
           Positioned(
             top: screenSize.height* 0.27, left: screenSize.width*0.05,
-            child: Text('Bio:', style: Theme.of(context).textTheme.headlineSmall),
+            child: Text('Bio:${widget.bio}', style: Theme.of(context).textTheme.headlineSmall),
           ),
           Positioned(
             top: screenSize.height*0.45, left: screenSize.width*0.05,
