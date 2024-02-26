@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:slug_teach/pages/colors.dart';
 import 'package:slug_teach/pages/home_page.dart';
@@ -6,10 +7,44 @@ import 'package:slug_teach/pages/messages.dart';
 
 class Tutor {
   final String name;
-  final String subject;
+  final List<String>? subjects;
+  final String birthday;
+  final String description;
+  final String email;
+  final String grade;
 
-  Tutor({required this.name, required this.subject});
+  Tutor(
+      {required this.name, required this.subjects, required this.birthday, required this.description, required this.email, required this.grade});
+
+  factory Tutor.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
+      SnapshotOptions? options,) {
+    final data = snapshot.data();
+    return Tutor(
+        name: data?['name'],
+        subjects:
+        data?['subjects'] is Iterable ? List.from(data?['subjects']) : null,
+        birthday: data?['birthday'],
+        description: data?['description'],
+        email: data?['email'],
+        grade: data?['grade']
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (name != null) "name": name,
+      if (subjects != null) "state": subjects,
+      if (birthday != null) "country": birthday,
+      if (description != null) "capital": description,
+      if (email != null) "population": email,
+      if (grade != null) "regions": grade,
+    };
+  }
 }
+
+
+
+
 
 class SearchPage extends StatefulWidget {
   @override
@@ -17,16 +52,33 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<Tutor> tutors = [
-    Tutor(name: 'Travis Scott', subject: 'English'),
-    Tutor(name: 'Jennifer Lopez', subject: 'Science'),
-    Tutor(name: 'Tom Cruise', subject: 'Math'),
-  ];
+  final CollectionReference tutorCollection =
+  FirebaseFirestore.instance.collection('tutors').withConverter<Tutor>(
+    fromFirestore: Tutor.fromFirestore,
+    toFirestore: (Tutor tutor, _) => tutor.toFirestore(),
+  );
 
+  List<Tutor> tutors = [];
   List<Tutor> filteredTutors = [];
+  var checkTutors = false;
+
+  Future<void> getTutorData(List<Tutor> tutorData) async {
+    if(checkTutors) return;
+    QuerySnapshot querySnapshot = await tutorCollection.get();
+
+    querySnapshot.docs.forEach((tutor) {
+      tutorData.add(tutor.data() as Tutor);
+    });
+    checkTutors = true;
+  }
+
+
+
+
 
   @override
   void initState() {
+    getTutorData(tutors);
     filteredTutors = tutors;
     super.initState();
   }
@@ -36,7 +88,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       filteredTutors = tutors
           .where((tutor) =>
-          tutor.subject.toLowerCase().contains(query.toLowerCase()))
+          tutor.subjects.toLowerCase().contains(query.toLowerCase())) //i had to turn subjects into a list, it was previously a string
           .toList();
     });
   }
@@ -110,7 +162,7 @@ class _SearchPageState extends State<SearchPage> {
                     child: Text(tutor.name[0]),
                   ),
                   title: Text(tutor.name),
-                  subtitle: Text('Subject: ${tutor.subject}'),
+                  subtitle: Text('Subjects: ${tutor.subjects?.join(", ")}'),
                 );
               },
             ),

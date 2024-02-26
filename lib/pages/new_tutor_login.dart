@@ -188,10 +188,10 @@ class _TutorLoginState extends State<TutorLogin> {
     if(user != null) {
       String userId = user.uid;
       print(userId + userEmail + userFirstName);
-      final CollectionReference studentsCollection =
+      final CollectionReference tutorCollection =
         FirebaseFirestore.instance.collection('tutors');
-      if (!(await studentsCollection.doc(userId).get()).exists){
-        studentsCollection.doc(userId).set({
+      if (!(await tutorCollection.doc(userId).get()).exists){
+        tutorCollection.doc(userId).set({
           'email': userEmail,
           'name': userFirstName + ' ' + userLastName,
           'birthday': userBirthday,

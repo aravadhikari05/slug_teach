@@ -193,10 +193,10 @@ class _StudentLoginState extends State<StudentLogin> {
     if(user != null) {
       String userId = user.uid;
       print(userId + userEmail + userFirstName);
-      final CollectionReference studentsCollection =
+      final CollectionReference studentCollection =
         FirebaseFirestore.instance.collection('students');
-      if (!(await studentsCollection.doc(userId).get()).exists){
-        studentsCollection.doc(userId).set({
+      if (!(await studentCollection.doc(userId).get()).exists){
+        studentCollection.doc(userId).set({
           'email': userEmail,
           'name': userFirstName + " " + userLastName,
           'birthday': userBirthday,
