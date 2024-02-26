@@ -90,12 +90,11 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void filterTutors(String query) {
-    //check for subjets
     setState(() {
-      filteredTutors = tutors
-          .where((tutor) =>
-          tutor.subjects.toLowerCase().contains(query.toLowerCase())) //i had to turn subjects into a list, it was previously a string
-          .toList();
+      filteredTutors = tutors.where((tutor) {
+        return tutor.subjects != null && tutor.subjects!.any((subject) =>
+            subject.toLowerCase().contains(query.toLowerCase()));
+      }).toList();
     });
   }
 
