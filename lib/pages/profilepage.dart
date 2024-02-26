@@ -11,7 +11,7 @@ import 'messages.dart';
 
 
 void main(){
-  runApp(ProfilePage("Name","bio"));
+  runApp(ProfilePage("Name","bio","email"));
 }
 
 
@@ -21,10 +21,10 @@ class ProfilePage extends StatelessWidget{
 
 
 
-  ProfilePage(this.username, this.bio,{super.key});
+  ProfilePage(this.username, this.bio,this.email,{super.key});
   String username;
   String bio;
-
+  String email;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget{
           colorScheme: ColorScheme.fromSeed(seedColor: maincolor),
           useMaterial3: true,
         ),
-        home: PfPage(name: username,bio:bio),
+        home: PfPage(name: username,bio:bio, email: email),
     );
   }
 }
@@ -43,9 +43,10 @@ class ProfilePage extends StatelessWidget{
 class PfPage extends StatefulWidget{
 
 
-  PfPage({super.key, required this.name, required this.bio});
+  PfPage({super.key, required this.name, required this.bio, required this.email});
   final String name;
   final String bio;
+  final String email;
 
   @override
   State<PfPage> createState() => PfPageState();
@@ -92,7 +93,7 @@ class PfPageState extends State<PfPage>{
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchPage(widget.name,widget.bio)));
+                        builder: (context) => SearchPage(widget.name,widget.bio,widget.email)));
 
 
               },
@@ -102,7 +103,7 @@ class PfPageState extends State<PfPage>{
               onPressed: () {Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Messages(widget.name,widget.bio)));
+                      builder: (context) => Messages(widget.name,widget.bio,widget.email)));
 
               },
             ),
@@ -170,6 +171,10 @@ class PfPageState extends State<PfPage>{
           Positioned(
             top: screenSize.height* 0.27, left: screenSize.width*0.05,
             child: Text('Bio:${widget.bio}', style: Theme.of(context).textTheme.headlineSmall),
+          ),
+          Positioned(
+            top: screenSize.height* 0.35, left: screenSize.width*0.05,
+            child: Text('Email:${widget.email}', style: Theme.of(context).textTheme.headlineSmall),
           ),
           Positioned(
             top: screenSize.height*0.45, left: screenSize.width*0.05,

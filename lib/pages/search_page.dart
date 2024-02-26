@@ -49,9 +49,10 @@ class Tutor {
 class SearchPage extends StatefulWidget {
 
 
-  SearchPage(this.username,this.bio);
+  SearchPage(this.username,this.bio,this.email);
   String username;
   String bio;
+  String email;
 
   @override
   _SearchPageState createState() => _SearchPageState();
@@ -138,7 +139,7 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Messages(widget.username,widget.bio)),
+                  MaterialPageRoute(builder: (context) => Messages(widget.username,widget.bio,widget.email)),
                 );
               },
             ),
@@ -147,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(widget.username,widget.bio)),
+                  MaterialPageRoute(builder: (context) => ProfilePage(widget.username,widget.bio,widget.email)),
                 );
               },
             ),
@@ -166,7 +167,7 @@ class _SearchPageState extends State<SearchPage> {
                   onTap: (){
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfilePage(tutor.name,tutor.description)));
+                        MaterialPageRoute(builder: (context) => ProfilePage(tutor.name,tutor.description,tutor.email)));
 
                   },
                   leading: CircleAvatar(

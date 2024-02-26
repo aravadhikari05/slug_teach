@@ -26,9 +26,10 @@ Route _createRoute(Widget app) {
   );
 }
 class Messages extends StatelessWidget {
-  Messages(this.username, this.bio,{super.key});
+  Messages(this.username, this.bio,this.email,{super.key});
   final String username;
   final String bio;
+  final String email;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class Messages extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
-                      Navigator.of(context).push(_createRoute(SearchPage(username,bio)));
+                      Navigator.of(context).push(_createRoute(SearchPage(username,bio,email)));
 
 
                     },
@@ -82,7 +83,7 @@ class Messages extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.account_circle),
                     onPressed: () {
-                      Navigator.of(context).push(_createRoute(ProfilePage(username,bio)));
+                      Navigator.of(context).push(_createRoute(ProfilePage(username,bio,email)));
 
                     },
                   ),

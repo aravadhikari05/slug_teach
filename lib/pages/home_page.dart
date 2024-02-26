@@ -37,6 +37,7 @@ Route _createRoute(Widget app) {
 class _HomePageState extends State<HomePage> {
   String _userName = 'User';
   String bio = "Bio";
+  String email = "email";
 
   @override
   void initState() {
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           _userName = userDoc['name'];
           bio = userDoc['description'];
+          email = userDoc['email'];
 
         });
       }
@@ -87,19 +89,19 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               icon: Icon(Icons.search),
               onPressed: () {
-                Navigator.of(context).push(_createRoute(SearchPage(_userName,bio)));
+                Navigator.of(context).push(_createRoute(SearchPage(_userName,bio,email)));
               },
             ),
             IconButton(
               icon: Icon(Icons.chat),
               onPressed: () {
-                Navigator.of(context).push(_createRoute(Messages(_userName,bio)));
+                Navigator.of(context).push(_createRoute(Messages(_userName,bio,email)));
               },
             ),
             IconButton(
               icon: Icon(Icons.account_circle),
               onPressed: () {
-                Navigator.of(context).push(_createRoute(ProfilePage(_userName,bio)));
+                Navigator.of(context).push(_createRoute(ProfilePage(_userName,bio,email)));
               },
             ),
           ],
