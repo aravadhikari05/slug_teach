@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../user_auth/authentication.dart';
 import 'colors.dart';
@@ -188,7 +189,27 @@ class _StudentLoginState extends State<StudentLogin> {
 
     User? user = await _auth.signUpWithEmailAndPassword(userEmail, userPassword);
 
+
     if(user != null) {
+      String userId = user.uid;
+      print(userId + userEmail + userFirstName);
+      final CollectionReference studentsCollection =
+        FirebaseFirestore.instance.collection('students');
+      if (!(await studentsCollection.doc(userId).get()).exists){
+        studentsCollection.doc(userId).set({
+          'email': userEmail,
+          'name': userFirstName + " " + userLastName,
+          'birthday': userBirthday,
+          'grade': userGrade,
+          'description': userDescription,
+          'subjects': userSubjects,
+          // Other user info fields can be added here
+        })
+            .catchError((error) => print('Failed:$error'));
+      }
+      else print('this error');
+
+
       print("Successfully created a student account");
       Navigator.push(
           context,
